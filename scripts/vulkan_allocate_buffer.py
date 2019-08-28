@@ -14,8 +14,8 @@ from vulkan import *
 from vulkan._vulkancache import ffi
 
 # ************************************************************************************************
-# Boiler plate code to select appropiate GPU device, create logical device & compute queue,
-# and allocate memory for data
+# Boiler plate code to select appropiate GPU device, create logical device, compute queue,
+# allocate memory for data, etc.
 
 appInfo = VkApplicationInfo(sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
                             pApplicationName = "Allocate array in GPU",
@@ -69,7 +69,6 @@ device_create = VkDeviceCreateInfo(sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
 # create logical device in the physical device 
 logical_device = vkCreateDevice(physical_device, device_create, None)
 
-# ************************************************************************************************
 # Allocate 4*16384 bytes buffer memory (_ppData) in gpu
 
 buffer_length = 16384
@@ -78,8 +77,7 @@ mem_props = vkGetPhysicalDeviceMemoryProperties(physical_device)
 mem_type_index = -1
 for k in range(mem_props.memoryTypeCount):
     if  ((VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT & mem_props.memoryTypes[k].propertyFlags) and
-        (VK_MEMORY_PROPERTY_HOST_COHERENT_BIT & mem_props.memoryTypes[k].propertyFlags) and        
-        (VK_MEMORY_PROPERTY_HOST_COHERENT_BIT & mem_props.memoryTypes[k].propertyFlags) and        
+        (VK_MEMORY_PROPERTY_HOST_COHERENT_BIT & mem_props.memoryTypes[k].propertyFlags) and                
         (mem_size < mem_props.memoryHeaps[mem_props.memoryTypes[k].heapIndex].size)):
         mem_type_index = k
         break
@@ -103,7 +101,7 @@ _ppData = vkMapMemory(logical_device,device_memory,0,mem_size,0)
 # Assign random integer value to gpu buffer allocate above (using cffi) 
 
 ppData = ffi.from_buffer("int[]",_ppData)
-print('** Assign randon int between -1000 and 1000')
+print('** Assign random int between -1000 and 1000')
 for x in range(buffer_length):
     ppData[x] = random.randint(-1000,1000)
 
@@ -113,8 +111,8 @@ for x in range(buffer_length):
 arr = np.frombuffer(_ppData,dtype=np.int32)
 print('** Numpy array:')
 print(arr)
-arr[2] = 100
 
+arr[2] = 100
 print('** Buffer after assigning 100 to index 2:')
 print('Numpy array: %r'%arr)
 print(ppData[2])
