@@ -38,7 +38,6 @@ from vulkan._vulkancache import ffi
 # This problem uses 1-D buffers with 256 work groups and 64 invocations per each for computation.
 
 buffer_length = 16384
-#buffer_length = 128000
 total_thread_per_invocation = 64 # this is hardcoded in compiled compute shader code 
 total_work_groups =  int(buffer_length/total_thread_per_invocation)
 
@@ -172,6 +171,7 @@ arr_out_init = arr[buffer_length:].copy() # need copy?
 # ************************************************************************************************
 logging.info('Create input and output buffers in gpu for use in compute shader')
 # No more need to map GPU memory to Host after initialization of values 
+
 vkUnmapMemory(device = logical_device,
               memory = device_memory)
 
@@ -438,12 +438,14 @@ _ppData = vkMapMemory(logical_device,device_memory,0,mem_size,0)
 arr = np.frombuffer(_ppData,dtype=np.int32)
 
 print('\n------ Results ------------\n')
+
 print('**Input buffer values**')
 print(arr[0:buffer_length])
 print('\n**Initial output array**')
 print(arr_out_init)
 print('\n**Final output array**')
 print(arr[buffer_length:])
+
 print('\n------ The End ------------')
 
 
