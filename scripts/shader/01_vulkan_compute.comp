@@ -1,0 +1,26 @@
+// This compute operation code written in OpenGL Shading Language (GLSL)
+// This simply copies input buffer multiplied by 2 to output buffer
+// Conversion to SPIR-V text command: glslangValidator -H 01_vulkan_compute.comp > 01_vulkan_compute.comp.spv
+// Conversion to SPIR-V binary command: glslangValidator -V 01_vulkan_compute.comp -o 01_vulkan_compute.comp.spv
+
+#version 450
+layout (local_size_x = 64) in; //worksize is 64
+
+// Refer to buffers  defined in Python/Vulkan script
+
+layout (std430,binding = 0) buffer  lay0 {
+    int in_buffer[];
+};
+
+layout (std430,binding = 1) buffer  lay1 {
+    int out_buffer[];
+};
+
+
+void main() 
+{
+    uint idx = gl_GlobalInvocationID.x;
+    if (idx < in_buffer.length()) {
+        out_buffer[idx] = 2*in_buffer[idx];
+    }
+}

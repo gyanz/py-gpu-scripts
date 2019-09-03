@@ -1,0 +1,8 @@
+.vscode/
+__pycache__
+*.swp
+Icon?
+.DS_Store
+Thumbs.db
+ehthumbs.db
+

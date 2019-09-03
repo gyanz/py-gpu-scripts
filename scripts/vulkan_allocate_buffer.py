@@ -69,10 +69,12 @@ device_create = VkDeviceCreateInfo(sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
 # create logical device in the physical device 
 logical_device = vkCreateDevice(physical_device, device_create, None)
 
-# Allocate 4*16384 bytes buffer memory (_ppData) in gpu
+# Allocate 2*4*16384 bytes (_ppData) in gpu. The memory is divided equally between
+# two buffers (in_buffer and out_buffer) in Part 2.
 
 buffer_length = 16384
-mem_size = buffer_length * ctypes.sizeof(ctypes.c_int)  
+buffer_size = buffer_length * ctypes.sizeof(ctypes.c_int)  
+mem_size = buffer_size * 2  
 mem_props = vkGetPhysicalDeviceMemoryProperties(physical_device)
 mem_type_index = -1
 for k in range(mem_props.memoryTypeCount):
@@ -98,7 +100,7 @@ device_memory = vkAllocateMemory(logical_device,memAllocInfo,0)
 _ppData = vkMapMemory(logical_device,device_memory,0,mem_size,0)
 
 # ************************************************************************************************
-# Assign random integer value to gpu buffer allocate above (using cffi) 
+# Initialize the memory with random integer (cffi approach) from CPU
 
 ppData = ffi.from_buffer("int[]",_ppData)
 print('** Assign random int between -1000 and 1000')
@@ -106,7 +108,7 @@ for x in range(buffer_length):
     ppData[x] = random.randint(-1000,1000)
 
 # ************************************************************************************************
-# Further modify gpu buffer values (using numpy)
+# Further modify gpu memory (using numpy) from CPU. 
 
 arr = np.frombuffer(_ppData,dtype=np.int32)
 print('** Numpy array:')
@@ -123,3 +125,8 @@ arr[:] = 2000
 print('** Buffer after assigning 2000 to each element')
 print('Numpy array: %r'%arr)
 print(ppData[2])
+
+arr[:buffer_length] = 4000
+arr[buffer_length:] = 0
+
+
