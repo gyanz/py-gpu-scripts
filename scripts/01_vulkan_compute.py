@@ -462,6 +462,11 @@ INFO:root:Initialize the memory with random integer using _ppData, which is visi
 [ 96 621 830 ...   0   0   0]
 ** Buffer after assigning 100 to index 2:
 Numpy array: array([ 96, 621, 100, ...,   0,   0,   0])
+[-838  235  822 ...    0    0    0]
+** Buffer after assigning 100 to index 2:
+Numpy array: array([-838,  235,  100, ...,    0,    0,    0])
+>>>>>>> 1e71438fb80ea454a42da5613d29d8ef4914c660
+>>>>>>> 996486b694c2f2822c58656b9f6d70803da3d2e7
 100
 ** Buffer after assigning 4000 and 0 to in_buffer and out_buffer, respectively
 Numpy array: array([4000, 4000, 4000, ...,    0,    0,    0])
