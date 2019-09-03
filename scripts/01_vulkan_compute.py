@@ -38,7 +38,10 @@ from vulkan._vulkancache import ffi
 # This problem uses 1-D buffers with 256 work groups and 64 invocations per each for computation.
 
 buffer_length = 16384
+<<<<<<< HEAD
 #buffer_length = 128000
+=======
+>>>>>>> 1e71438fb80ea454a42da5613d29d8ef4914c660
 total_thread_per_invocation = 64 # this is hardcoded in compiled compute shader code 
 total_work_groups =  int(buffer_length/total_thread_per_invocation)
 
@@ -172,6 +175,7 @@ arr_out_init = arr[buffer_length:].copy() # need copy?
 # ************************************************************************************************
 logging.info('Create input and output buffers in gpu for use in compute shader')
 # No more need to map GPU memory to Host after initialization of values 
+
 vkUnmapMemory(device = logical_device,
               memory = device_memory)
 
@@ -438,12 +442,14 @@ _ppData = vkMapMemory(logical_device,device_memory,0,mem_size,0)
 arr = np.frombuffer(_ppData,dtype=np.int32)
 
 print('\n------ Results ------------\n')
+
 print('**Input buffer values**')
 print(arr[0:buffer_length])
 print('\n**Initial output array**')
 print(arr_out_init)
 print('\n**Final output array**')
 print(arr[buffer_length:])
+
 print('\n------ The End ------------')
 
 
@@ -457,9 +463,15 @@ INFO:root:Make the GPU memory visible to CPU
 INFO:root:Initialize the memory with random integer using _ppData, which is visible to CPU
 ** Assign random int between -1000 and 1000
 ** Numpy array:
+<<<<<<< HEAD
 [ 96 621 830 ...   0   0   0]
 ** Buffer after assigning 100 to index 2:
 Numpy array: array([ 96, 621, 100, ...,   0,   0,   0])
+=======
+[-838  235  822 ...    0    0    0]
+** Buffer after assigning 100 to index 2:
+Numpy array: array([-838,  235,  100, ...,    0,    0,    0])
+>>>>>>> 1e71438fb80ea454a42da5613d29d8ef4914c660
 100
 ** Buffer after assigning 4000 and 0 to in_buffer and out_buffer, respectively
 Numpy array: array([4000, 4000, 4000, ...,    0,    0,    0])
@@ -482,6 +494,10 @@ INFO:root:Finished Computation
 **Final output array**
 [8000 8000 8000 ... 8000 8000 8000]
 
+<<<<<<< HEAD
 ------ The End ------------
+=======
+------ The End -----------
+>>>>>>> 1e71438fb80ea454a42da5613d29d8ef4914c660
 '''
 # ************************************************************************************************
