@@ -143,7 +143,7 @@ logging.info('Initialize the memory with random integer using _ppData, which is 
 
 ppData = ffi.from_buffer("int[]",_ppData)
 print('** Assign random int between -1000 and 1000')
-for x in range(buffer_length):
+for x in range(buffer_length*2):
     ppData[x] = random.randint(-1000,1000)
 
 # Further modify gpu memory (using numpy) from CPU. Finally, assign 4000 to input buffer and
@@ -459,12 +459,9 @@ INFO:root:Make the GPU memory visible to CPU
 INFO:root:Initialize the memory with random integer using _ppData, which is visible to CPU
 ** Assign random int between -1000 and 1000
 ** Numpy array:
-[ 96 621 830 ...   0   0   0]
+[ 730  590 -303 ...  457  434 -898]
 ** Buffer after assigning 100 to index 2:
-Numpy array: array([ 96, 621, 100, ...,   0,   0,   0])
-[-838  235  822 ...    0    0    0]
-** Buffer after assigning 100 to index 2:
-Numpy array: array([-838,  235,  100, ...,    0,    0,    0])
+Numpy array: array([ 730,  590,  100, ...,  457,  434, -898])
 100
 ** Buffer after assigning 4000 and 0 to in_buffer and out_buffer, respectively
 Numpy array: array([4000, 4000, 4000, ...,    0,    0,    0])
